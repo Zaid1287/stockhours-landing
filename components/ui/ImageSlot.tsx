@@ -25,7 +25,7 @@ export function ImageSlot({
       style={{ background: "linear-gradient(160deg,#0e1116,#070809)" }}
     >
       {src ? (
-        <Image src={src} alt={alt ?? label} fill className="object-cover" sizes="(max-width:768px) 100vw, 33vw" />
+        <Image src={src.startsWith("/") ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${src}` : src} alt={alt ?? label} fill className="object-cover" sizes="(max-width:768px) 100vw, 33vw" />
       ) : (
         <>
           {chart && (
