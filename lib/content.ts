@@ -242,4 +242,4 @@ export const disclaimer =
   "Trading stocks, options, and futures involves substantial risk of loss and is not suitable for every investor. The vast majority of day traders lose money. Stock Hours provides educational content and trade ideas only — nothing here is financial, investment, or tax advice, and no result is guaranteed. Past performance does not indicate future results.";
 
 export const prototypeNote =
-  "Design prototype — not affiliated with, endorsed by, or operated by Nour Atta or Stock Hours. Built as a portfolio demonstration. All imagery is placeholder until real assets are supplied.";
+  "Design prototype — not affiliated with, endorsed by, or operated by Nour Atta or Stock Hours. Built as a portfolio demonstration only. Photos are the trader's own public Instagram posts, shown to illustrate the concept.";
