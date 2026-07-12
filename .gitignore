@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw IG screenshots (kept locally for re-crop; only opt/ is deployed)
+/public/nour/*.jpg

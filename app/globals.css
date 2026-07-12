@@ -1,26 +1,183 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ *
+ *  Stock Hours — Ethereal Glass / OLED trader theme
+ * ------------------------------------------------------------------ */
+
+@theme {
+  --color-bg: #050506;
+  --color-bg-soft: #0a0b0d;
+  --color-panel: #0d0f13;
+  --color-ink: #f4f6f8;
+  --color-muted: #9aa3ad;
+  --color-faint: #6a727c;
+  --color-hairline: rgba(255, 255, 255, 0.09);
+
+  --color-up: #00e08a;
+  --color-up-soft: rgba(0, 224, 138, 0.14);
+  --color-down: #ff5470;
+  --color-gold: #e8b15a;
+
+  --font-display: var(--font-display-face), "Space Grotesk", sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --shadow-lift: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 0 1px rgba(0, 224, 138, 0.25), 0 20px 60px -18px rgba(0, 224, 138, 0.35);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Ambient background: mesh glow orbs + film grain, fixed & inert */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 78% -8%, rgba(0, 224, 138, 0.16), transparent 60%),
+    radial-gradient(50rem 40rem at 12% 8%, rgba(56, 132, 255, 0.10), transparent 62%),
+    radial-gradient(60rem 50rem at 90% 88%, rgba(232, 177, 90, 0.07), transparent 60%),
+    var(--color-bg);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Reusable primitives ---------------------------------------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-hairline);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.3rem 0.8rem;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+/* Double-bezel: aluminium tray holding a glass plate */
+.bezel {
+  border-radius: 2rem;
+  border: 1px solid var(--color-hairline);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.4rem;
+}
+.bezel-core {
+  border-radius: calc(2rem - 0.4rem);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  height: 100%;
+}
+
+.glass {
+  background: rgba(13, 15, 19, 0.6);
+  border: 1px solid var(--color-hairline);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+}
+
+/* Island buttons */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 9999px;
+  padding: 0.85rem 1.1rem 0.85rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.5s var(--ease-fluid), background 0.5s var(--ease-fluid),
+    box-shadow 0.5s var(--ease-fluid);
+  will-change: transform;
+}
+.btn:active {
+  transform: scale(0.975);
+}
+.btn-primary {
+  background: var(--color-up);
+  color: #04160f;
+  box-shadow: var(--shadow-glow);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 0 1px rgba(0, 224, 138, 0.5), 0 26px 70px -16px rgba(0, 224, 138, 0.55);
+}
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+  padding: 0.85rem 1.4rem;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Button-in-button trailing icon */
+.btn-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 9999px;
+  background: rgba(4, 22, 15, 0.18);
+  transition: transform 0.5s var(--ease-fluid);
+}
+.btn-primary:hover .btn-chip {
+  transform: translate(2px, -1px) scale(1.06);
+}
+
+/* Ticker marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-flex;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: marquee 42s linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track { animation: none; }
+}
+
+/* Focus visibility for a11y */
+:focus-visible {
+  outline: 2px solid var(--color-up);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
